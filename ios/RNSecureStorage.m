@@ -1,7 +1,14 @@
 #import <Security/Security.h>
+#if __has_include("RCTBridgeModule.h")
+#import "RCTConvert.h"
+#import "RCTBridge.h"
+#import "RCTUtils.h"
+#else
 #import <React/RCTConvert.h>
 #import <React/RCTBridge.h>
 #import <React/RCTUtils.h>
+#endif
+
 #import "RNSecureStorage.h"
 
 @implementation RNSecureStorage
@@ -148,8 +155,8 @@ RCT_EXPORT_METHOD(getAllItems:(NSDictionary *)options resolver:(RCTPromiseResolv
 	if (result != NULL){
 		for (NSDictionary* item in (__bridge id)result) {
 			NSString* key = item[(NSString*)kSecAttrAccount];
-			NSString* value = item[(NSString*)kSecValueData];
-			[finalResult addObject:@{key: value}];
+			NSData* value = item[(NSString*)kSecValueData];
+			[finalResult addObject:@{key: [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding]}];
 		}
 	}
 	
