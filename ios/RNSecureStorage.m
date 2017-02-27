@@ -136,18 +136,17 @@ RCT_EXPORT_METHOD(getAllItems:(NSDictionary *)options resolver:(RCTPromiseResolv
 	
 	NSString * keychainService = [RCTConvert NSString:options[@"keychainService"]];
 	
-	NSMutableArray* finalResult = [[NSMutableArray alloc] init];
+	NSMutableDictionary* finalResult = [[NSMutableDictionary alloc] init];
 	NSMutableDictionary *query = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 								  (__bridge id)kCFBooleanTrue, (__bridge id)kSecReturnAttributes,
 								  (__bridge id)kSecMatchLimitAll, (__bridge id)kSecMatchLimit,
 								  (__bridge id)kCFBooleanTrue, (__bridge id)kSecReturnData,
+								  (__bridge id)kSecClassGenericPassword, (__bridge id)kSecClass,
 								  nil];
 	
 	if (keychainService) {
 		[query setObject:keychainService forKey:(NSString*)kSecAttrService];
 	}
-	
-	[query setObject:(NSString*)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
 	
 	CFTypeRef result = NULL;
 	SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);
@@ -156,7 +155,7 @@ RCT_EXPORT_METHOD(getAllItems:(NSDictionary *)options resolver:(RCTPromiseResolv
 		for (NSDictionary* item in (__bridge id)result) {
 			NSString* key = item[(NSString*)kSecAttrAccount];
 			NSData* value = item[(NSString*)kSecValueData];
-			[finalResult addObject:@{key: [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding]}];
+			finalResult[key] = [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding];
 		}
 	}
 	
