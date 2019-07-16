@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.description  = <<-DESC
                   RNSecureStorage
                    DESC
-  s.homepage     = ""
+  s.homepage     = "https://github.com/paritytech/react-native-secure-storage/"
   s.license      = "MIT"
   # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
   s.author             = { "author" => "author@domain.cn" }
