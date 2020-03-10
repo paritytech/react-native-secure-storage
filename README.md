@@ -5,12 +5,15 @@
 
 `$ npm install react-native-secure-storage --save`
 
-### Mostly automatic installation
+### Mostly automatic installation 
 
 `$ react-native link react-native-secure-storage`
 
-### Manual installation
+If you use React Native version >= 0.60, need additionally run:
 
+`$ cd ios && pod install && cd ..`
+
+### Manual installation
 
 #### iOS
 
@@ -44,10 +47,34 @@
 
 
 ## Usage
+
+* getItem(String key, SecureStoreParams options)
+* setItem(String key, String value, SecureStoreParams options)
+* deleteItem(String key, SecureStoreParams options)
+* getAllItems(SecureStoreParams options)
+
+```typescript
+interface SecureStoreParams {
+    keychainService: string; //used for iOS
+    sharedPreferencesName: string; //used for Android
+}
+```
+
+### Example
 ```javascript
 import RNSecureStorage from 'react-native-secure-storage';
 
-// TODO: What to do with the module?
-RNSecureStorage;
-```
+const storeParams = {
+  keychainService: 'accounts_example_app_ios',
+  sharedPreferencesName: 'accounts_example_app_android',
+}
+
+async function RNSecureStorageExample () {
+  await RNSecureStorage.setItem('sunny_day', '365', storeParams);
+  const saveValue = await RNSecureStorage.getItem('sunny_day', storeParams);
   
+  const allEntries = await RNSecureStorage.getAllItems(storeParams);
+  //all Entries is an object with key as string and value as string;
+  await RNSecureStorage.deleteItem('sunny_day', storeParams);
+}
+```
