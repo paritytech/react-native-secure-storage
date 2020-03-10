@@ -5,12 +5,15 @@
 
 `$ npm install react-native-secure-storage --save`
 
-### Mostly automatic installation
+### Mostly automatic installation 
 
 `$ react-native link react-native-secure-storage`
 
-### Manual installation
+If you use React Native version >= 0.60, need additionally run:
 
+`$ cd ios && pod install && cd ..`
+
+### Manual installation
 
 #### iOS
 
